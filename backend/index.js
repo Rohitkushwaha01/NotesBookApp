@@ -14,7 +14,7 @@ app.use(express.json());
 
 //available routes
 app.use("/api/auth", require("./routes/auth"));
-// app.use("/api/notes", require("./routes/note"));
+app.use("/api/notes", require("./routes/notes"));
 
 // listening on port 3000
 app.listen(port, () => {

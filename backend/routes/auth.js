@@ -5,8 +5,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/Users");
-const fetchuser = require('../middleware/fetchuser');
-
+const fetchuser = require("../middleware/fetchuser");
 // ROUTE 1: create a users using post endpoint "api/auth"
 router.post(
   "/createuser",

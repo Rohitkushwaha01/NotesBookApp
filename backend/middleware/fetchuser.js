@@ -9,7 +9,6 @@ const fetchuser = async (req, res, next)=> {
     }
     try{
         const data = jwt.verify(token, process.env.JWTSECRET)
-        console.log(data);
         req.user = data.user;
         next();
     }
