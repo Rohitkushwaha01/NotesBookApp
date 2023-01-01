@@ -1,22 +1,18 @@
 const express = require("express");
-const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const fetchuser = require("../middleware/fetchuser");
 const Notes = require("../models/Notes");
+const { body, validationResult } = require("express-validator");
 
 // ROUTE 1: get all the notes
 router.get("/fetchnotes", async (req, res) => {
-    try {
-        const notes = await Notes.find({ user: req.id });
-        console.log(notes)
-        res.json(notes);
-        const data = await fetchuser();
-        console.log(data)
-        
-    } catch (err) {
-        console.log(err.message);
-        res.status(500);
-    }
+  try {
+    const notes = await Notes.find({ user: req.id });
+    res.json(notes);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500);
+  }
 });
 
 // ROUTE 2: post or add notes
@@ -33,27 +29,28 @@ router.post(
     body("tag", "Enter tag").isLength({ min: 3 }),
   ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     try {
       const { title, description, tag } = req.body;
-    
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      console.log(req.users);
+
       const note = new Notes({
+        user:req.users.id,
         title,
         description,
         tag,
-        user: req.user.id
       });
 
       const savedNotes = await note.save();
 
       res.json(savedNotes);
     } catch (err) {
-        console.log(err.message);
-        res.status(500);
+      console.log(err.message);
+      res.status(500);
     }
   }
 );
